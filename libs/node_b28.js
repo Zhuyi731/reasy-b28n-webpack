@@ -216,36 +216,32 @@ function checkTranslate(srcdir, transFile, saveTo, fileName) {
         });
     }
 
-    nodeGlob(transFile + "/**/*.json", (err, files) => {
-        if (err) throw err;
-        if (!files) {
-            console.error("没有找到相关JSON文件");
-        } else {
-            files.forEach((file) => {
-                let transData = fs.readFileSync(file, "utf-8");
-                errorData.push(`/********${file}********/`);
-                transData = JSON.parse(transData);
+    let files = nodeGlob.sync(transFile + "/**/*.json")
+   
+    files.forEach((file) => {
+        let transData = fs.readFileSync(file, "utf-8");
+        errorData.push(`/********${file}********/`);
+        transData = JSON.parse(transData);
 
-                for (let i = 0, l = langFetchArr.length; i < l; i++) {
-                    let curItem = langFetchArr[i];
-                   
-                    if (curItem && (new RegExp("^/\\*\-")).test(curItem)) {
-                        errorData.push(curItem);
-                    } else {
-                        if (transData[curItem] === undefined) {
-                            errorData.push(curItem);
-                        }
-                    }
-                    if(i == l - 1){
-                        errorData.push(`/********${file}********/`);
-                    }
+        for (let i = 0, l = langFetchArr.length; i < l; i++) {
+            let curItem = langFetchArr[i];
+
+            if (curItem && (new RegExp("^/\\*\-")).test(curItem)) {
+                errorData.push(curItem);
+            } else {
+                if (transData[curItem] === undefined) {
+                    errorData.push(curItem);
                 }
-            })
-
-            writeFile(path.join(saveTo, fileName), errorData);
-            console.log(`文件检查已完成，错误信息文件为: ${fileName}`);
+            }
+            if (i == l - 1) {
+                errorData.push(`/********${file}********/`);
+            }
         }
-    });
+    })
+
+    writeFile(path.join(saveTo, fileName), errorData);
+    console.log(`文件检查已完成，错误信息文件为: ${fileName}`);
+
 }
 
 function _translatePage(page, saveTo) { //翻译html
