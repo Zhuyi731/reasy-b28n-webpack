@@ -1,13 +1,13 @@
 {
-  "name": "reasy-b28n-webpack",
+  "name": "reasy-translate-checktool-webpack",
   "version": "1.0.0",
-  "description": "",
+  "description": "a check tool for translation check",
   "main": "node_b28.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["check tool"],
+  "author": "zhuyi",
   "license": "ISC",
   "devDependencies": {
     "glob": "^7.1.2",
